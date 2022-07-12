@@ -17,6 +17,26 @@ public:
 };
 
 template <typename Scalar>
+std::vector<Scalar> gen_circular_contour(Scalar center, typename Scalar::value_type radius, size_t resolution) {
+  using Real = typename Scalar::value_type;
+  std::vector<Scalar> points;
+
+  for (size_t idx = 0; idx < resolution; idx++) {
+    Real x = ((Real)idx) / ((Real)resolution) * 2 * M_PI;
+
+    points.push_back(
+        center +
+        radius *
+            std::complex<typename Scalar::value_type>(
+                std::cos((long double)x),
+                std::sin((long double)x))); // casting to long double, because
+                                            // std::cos cannot take posits
+  }
+
+  return points;
+}
+
+template <typename Scalar>
 Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>
 gen_random_full_rank(size_t &rows, size_t &cols, size_t seed) {
   using RealScalar = typename Scalar::value_type;

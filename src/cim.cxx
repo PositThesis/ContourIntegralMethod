@@ -174,19 +174,7 @@ int main(int argc, char **argv) {
     poly.push(get_matrix_from_mtx_file<Scalar>(f));
   }
   std::cerr << "built poly" << std::endl;
-  std::vector<Scalar> points;
-
-  for (size_t idx = 0; idx < num_points; idx++) {
-    Real x = ((Real)idx) / ((Real)num_points) * 2 * M_PI;
-
-    points.push_back(
-        center +
-        radius *
-            std::complex<typename Scalar::value_type>(
-                std::sin((long double)x),
-                std::cos((long double)x))); // casting to long double, because
-                                            // std::cos cannot take posits
-  }
+  std::vector<Scalar> points = gen_circular_contour(center, radius, num_points);
 
   auto lamb = [](Scalar s) -> Eigen::Matrix<Scalar, 3, 3> {
     Eigen::Matrix<Scalar, 3, 3> mat_a;

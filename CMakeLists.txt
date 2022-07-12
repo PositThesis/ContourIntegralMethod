@@ -44,3 +44,13 @@ foreach(type IN LISTS USE_Type_Flags)
     target_compile_definitions(CIM${type} PUBLIC ${type})
     install(TARGETS CIM${type} DESTINATION bin)
 endforeach()
+
+if(TESTS)
+
+    add_executable(Test test/tests.cxx)
+    target_link_libraries(Test Eigen3::Eigen OpenMP::OpenMP_CXX EigenUniversalIntegration::EigenUniversalIntegration)
+    target_include_directories(Test PUBLIC "${PROJECT_BINARY_DIR}" "include" "include/3rd_party" universal)
+    target_compile_features(Test INTERFACE cxx_std_20)
+    add_test(NAME Test COMMAND Test)
+
+endif(TESTS)
