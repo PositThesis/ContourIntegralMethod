@@ -35,7 +35,7 @@ endif(DEBUG)
 
 message("Flags: ${CMAKE_CXX_FLAGS}")
 
-list(APPEND USE_Type_Flags USE_Float USE_Double USE_LongDouble USE_Posit162 USE_Posit322 USE_Posit644)
+list(APPEND USE_Type_Flags USE_Float USE_Double USE_LongDouble USE_Posit16 USE_Posit32 USE_Posit64)
 
 foreach(type IN LISTS USE_Type_Flags)
     add_executable(CIM${type} src/cim.cxx)

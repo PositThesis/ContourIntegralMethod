@@ -78,14 +78,14 @@ int main(int argc, char **argv) {
 #ifdef USE_LongDouble
   using Scalar = std::complex<long double>;
 #endif
-#ifdef USE_Posit162
+#ifdef USE_Posit16
   using Scalar = std::complex<sw::universal::posit<16, 2>>;
 #endif
-#ifdef USE_Posit322
+#ifdef USE_Posit32
   using Scalar = std::complex<sw::universal::posit<32, 2>>;
 #endif
-#ifdef USE_Posit644
-  using Scalar = std::complex<sw::universal::posit<64, 4>>;
+#ifdef USE_Posit64
+  using Scalar = std::complex<sw::universal::posit<64, 2>>;
 #endif
   using Real = Scalar::value_type;
 
