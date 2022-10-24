@@ -37,12 +37,22 @@ message("Flags: ${CMAKE_CXX_FLAGS}")
 
 list(APPEND USE_Type_Flags USE_Float USE_Double USE_LongDouble USE_Posit16 USE_Posit32 USE_Posit64)
 
+list(APPEND USE_Type_Flags_no_fdp USE_Posit16 USE_Posit32 USE_Posit64)
+
 foreach(type IN LISTS USE_Type_Flags)
     add_executable(CIM${type} src/cim.cxx)
     target_link_libraries(CIM${type} Eigen3::Eigen OpenMP::OpenMP_CXX)
     target_include_directories(CIM${type} PUBLIC "${PROJECT_BINARY_DIR}" "include" "3rd_party" universal)
-    target_compile_definitions(CIM${type} PUBLIC ${type})
+    target_compile_definitions(CIM${type} PUBLIC ${type} USE_FDP=1)
     install(TARGETS CIM${type} DESTINATION bin)
+endforeach()
+
+foreach(type IN LISTS USE_Type_Flags_no_fdp)
+    add_executable(CIM${type}_no_fdp src/cim.cxx)
+    target_link_libraries(CIM${type}_no_fdp Eigen3::Eigen OpenMP::OpenMP_CXX)
+    target_include_directories(CIM${type}_no_fdp PUBLIC "${PROJECT_BINARY_DIR}" "include" "3rd_party" universal)
+    target_compile_definitions(CIM${type}_no_fdp PUBLIC ${type} USE_FDP=0)
+    install(TARGETS CIM${type}_no_fdp DESTINATION bin)
 endforeach()
 
 if(TESTS)

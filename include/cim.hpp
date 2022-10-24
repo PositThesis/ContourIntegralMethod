@@ -1,4 +1,4 @@
-#include <EigenIntegration/internal/posit_concepts.hpp>
+#include <EigenIntegration/std_integration.hpp>
 #include <Eigen/Dense>
 #include <complex>
 #include <functional>
@@ -28,8 +28,8 @@ std::vector<Scalar> gen_circular_contour(Scalar center, typename Scalar::value_t
         center +
         radius *
             std::complex<typename Scalar::value_type>(
-                std::cos((long double)x),
-                std::sin((long double)x))); // casting to long double, because
+                std::cos(x),
+                std::sin(x))); // casting to long double, because
                                             // std::cos cannot take posits
   }
 

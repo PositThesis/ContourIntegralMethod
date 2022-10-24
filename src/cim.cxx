@@ -1,6 +1,15 @@
 #include "cim.hpp"
 // #include "complex_eigen_overrides.hpp"
+
+#if USE_FDP == 1
+#pragma message ("FDP is ON")
 #include <EigenIntegration/Overrides.hpp>
+#else
+// make sure that it is defined at all
+#pragma message ("FDP is OFF")
+static_assert(USE_FDP == 0);
+#endif
+
 #include <EigenIntegration/MtxIO.hpp>
 #include <Eigen/Dense>
 #include <chrono>
@@ -9,6 +18,7 @@
 #include <string.h>
 #include <string>
 #include <universal/number/posit/posit.hpp>
+#include <chrono>
 
 template <typename Scalar> using Vec = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 template <typename Scalar>
@@ -200,8 +210,10 @@ int main(int argc, char **argv) {
     return mat_a + s * mat_b;
   };
 
+  std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
   std::pair<Mat<Scalar>, Mat<Scalar>> result =
       cim_solve<Mat<Scalar>>(poly, points, gamma, l_start);
+  std::chrono::time_point<std::chrono::high_resolution_clock> later = std::chrono::high_resolution_clock::now();
 
   if (output_file != "-")
     write_matrix(result.first, output_file + ".mtx");
@@ -224,7 +236,9 @@ int main(int argc, char **argv) {
   if (output_file != "-") {
     std::ofstream file(output_file + "_residuals.json");
     file << "{\n\t\"max\": " << residuals.maxCoeff()
-         << ",\n\t\"min\": " << residuals.minCoeff() << "\n}" << std::endl;
+         << ",\n\t\"min\": " << residuals.minCoeff()
+         << ",\n\t\"microseconds\": " << std::chrono::duration_cast<std::chrono::microseconds>(later - start).count()
+         << "\n}" << std::endl;
     file.close();
   } else {
     std::cout << "Max Residual: " << residuals.maxCoeff() << std::endl;
