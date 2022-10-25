@@ -26,7 +26,7 @@
                     nativeBuildInputs = [pkgs.cmake];
 
                     buildInputs = [
-                        online_lib.packages.${system}.eigen
+                        pkgs.eigen
                         online_lib.packages.${system}.universal
                         online_lib.packages.${system}.eigen_universal_integration
                         pkgs.llvmPackages.openmp

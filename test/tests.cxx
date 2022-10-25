@@ -6,6 +6,14 @@
 #include <iostream>
 #include <string>
 #include <tuple>
+#include <universal/number/posit/posit.hpp>
+
+#ifdef USEIEEE
+using Scalar = double;
+#endif
+#ifdef USEPosit
+using Scalar = sw::universal::posit<64,2>;
+#endif
 
 template <typename Scalar>
 bool test_circular_contour_creation(Scalar center, typename Scalar::value_type radius, size_t resolution) {
@@ -68,24 +76,24 @@ int main() {
 
     bool ok = true;
     ok &= run_test([]() -> bool {
-        return test_circular_contour_creation(std::complex<double>(0, 0), 1, 50);
+        return test_circular_contour_creation(std::complex<Scalar>(0, 0), 1, 50);
     }, "origin, unit radius, 50 points:                    ");
 
     ok &= run_test([]() -> bool {
-        return test_circular_contour_creation(std::complex<double>(5, -3), 0.25, 29);
+        return test_circular_contour_creation(std::complex<Scalar>(5, -3), 0.25, 29);
     }, "(5 - 3i), quarter radius, 29 points:               ");
 
     ok &= run_test([]() -> bool {
-        return test_circular_contour_creation(std::complex<double>(5, -3), -1.25, 29);
+        return test_circular_contour_creation(std::complex<Scalar>(5, -3), -1.25, 29);
     }, "(5 - 3i), -1.25 radius, 29 points:                 ");
 
     ok &= run_test([]() -> bool {
-        std::vector<std::complex<double>> contour = gen_circular_contour(std::complex<double>(0, 0), 1.2, 50);
-        Eigen::Matrix<std::complex<double>, -1, -1> mat = Eigen::Matrix<std::complex<double>, -1, -1>::Zero(1, 1);
-        mat(0, 0) = std::complex<double>(1, 0);
-        return test_integration(contour, [&](std::complex<double> z) {
+        std::vector<std::complex<Scalar>> contour = gen_circular_contour(std::complex<Scalar>(0, 0), 1.2, 50);
+        Eigen::Matrix<std::complex<Scalar>, -1, -1> mat = Eigen::Matrix<std::complex<Scalar>, -1, -1>::Zero(1, 1);
+        mat(0, 0) = std::complex<Scalar>(1, 0);
+        return test_integration(contour, [&](std::complex<Scalar> z) {
             return z * z * mat;
-        }, std::complex<double>(0, 0));
+        }, std::complex<Scalar>(0, 0));
     }, "complex integration of holomorphic Scalar function: ");
 
     if (!ok) return -1;

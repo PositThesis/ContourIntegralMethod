@@ -177,15 +177,15 @@ int main(int argc, char **argv) {
   assert(num_points > 0);
   assert(radius > 0);
 
+  std::vector<Scalar> points = gen_circular_contour(center, radius, num_points);
+
+  for (long unsigned int i = 0; i < points.size(); i++) {
+    assert(std::abs(std::abs(points[i]) - radius) < 0.01);
+  }
+
   ComplexPoly<Scalar> poly;
   for (std::string &f : input_files) {
     poly.push(get_matrix_from_mtx_file<Scalar>(f));
-  }
-  std::cerr << "built poly" << std::endl;
-  std::vector<Scalar> points = gen_circular_contour(center, radius, num_points);
-
-  for (int i = 0; i < points.size(); i++) {
-    assert(std::abs((points[i].real() * points[i].real() + points[i].imag() * points[i].imag()) - radius) < 0.01);
   }
 
   std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
