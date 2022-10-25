@@ -16,6 +16,7 @@
       output_set = flake-utils.lib.eachDefaultSystem (system:
         let
             pkgs = nixpkgs.legacyPackages.${system};
+            python = pkgs.python3.withPackages(p: with p; [numpy]);
         in
         rec {
             packages = flake-utils.lib.flattenTree {
@@ -26,7 +27,7 @@
                     nativeBuildInputs = [pkgs.cmake];
 
                     buildInputs = [
-                        pkgs.eigen
+                        online_lib.packages.${system}.eigen
                         online_lib.packages.${system}.universal
                         online_lib.packages.${system}.eigen_universal_integration
                         pkgs.llvmPackages.openmp
@@ -49,9 +50,10 @@
 
             devShell = pkgs.mkShell {
                 buildInputs = [
-                    packages.universal
-                    pkgs.eigen
+                    online_lib.packages.${system}.universal
+                    online_lib.packages.${system}.eigen
                     pkgs.cmake
+                    python
                     # pkgs.gdbgui
                 ];
 
