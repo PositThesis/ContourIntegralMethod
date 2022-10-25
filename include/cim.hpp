@@ -29,8 +29,7 @@ std::vector<Scalar> gen_circular_contour(Scalar center, typename Scalar::value_t
         radius *
             std::complex<typename Scalar::value_type>(
                 std::cos(x),
-                std::sin(x))); // casting to long double, because
-                                            // std::cos cannot take posits
+                std::sin(x)));
   }
 
   return points;
@@ -45,8 +44,6 @@ gen_random_full_rank(size_t &rows, size_t &cols, size_t seed) {
   std::default_random_engine e(seed);
   std::normal_distribution<double> dist(0, 1);
 
-  // for now, just assume that a random matrix is full rank. Maybe check that in
-  // the future
   for (size_t i = 0; i < rows; i++) {
     for (size_t j = 0; j < cols; j++) {
       double random_num_r = dist(e);
@@ -99,7 +96,7 @@ integrate(Fn &fn, std::vector<typename MatrixType::Scalar> points, bool invert,
 
 template <typename MatrixType>
 std::vector<typename MatrixType::Scalar>
-get_singular_values(Eigen::BDCSVD<MatrixType> &svd,
+get_singular_values(Eigen::JacobiSVD<MatrixType> &svd,
                     typename MatrixType::Scalar::value_type gamma) {
   MatrixType singularValues = svd.singularValues();
   std::vector<typename MatrixType::Scalar> values_above_threshold;
@@ -144,7 +141,7 @@ requires HasComplexScalar<MatrixType>
   assert(points.size() > 0);
 
   bool kfound = false;
-  size_t m = X(points[0]).rows(); // X.size();
+  size_t m = X(points[0]).rows();
   size_t N = points.size();
 
   // The sum parts of A0 and A1 can be precomputed
@@ -162,7 +159,7 @@ requires HasComplexScalar<MatrixType>
         X_inv_sum * V_hat / std::complex<RealScalar>(0, (RealScalar)N);
 
     // Compute U, Sigma and V
-    Eigen::BDCSVD<MatrixType> svd(A0,
+    Eigen::JacobiSVD<MatrixType> svd(A0,
                                   Eigen::ComputeThinU | Eigen::ComputeThinV);
 
     // Figure out the amount of nonzero singular values

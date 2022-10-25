@@ -30,12 +30,6 @@ bool test_circular_contour_creation(Scalar center, typename Scalar::value_type r
             std::cerr << "Point: " << point << " and it's follow up " << next_point << " don't lie at an angle of " << angle_fraction << "; they are " << angle << " rad apart" << std::endl;
             return false;
         }
-        // std::arg is inconsistent...
-/*
-        if (actual_angle * radius < 0) {
-            std::cerr << "Angle " << angle << " has the wrong sign: " << actual_angle * radius << std::endl;
-            return false;
-        }*/
 
     }
     if (std::abs(sum/(typename Scalar::value_type)resolution - center) > 1e-4) {

@@ -1,6 +1,3 @@
-#include "cim.hpp"
-// #include "complex_eigen_overrides.hpp"
-
 #if USE_FDP == 1
 #pragma message ("FDP is ON")
 #include <EigenIntegration/Overrides.hpp>
@@ -10,6 +7,7 @@
 static_assert(USE_FDP == 0);
 #endif
 
+#include "cim.hpp"
 #include <EigenIntegration/MtxIO.hpp>
 #include <Eigen/Dense>
 #include <chrono>
@@ -186,29 +184,9 @@ int main(int argc, char **argv) {
   std::cerr << "built poly" << std::endl;
   std::vector<Scalar> points = gen_circular_contour(center, radius, num_points);
 
-  auto lamb = [](Scalar s) -> Eigen::Matrix<Scalar, 3, 3> {
-    Eigen::Matrix<Scalar, 3, 3> mat_a;
-    mat_a(0, 0) = 1;
-    mat_a(0, 1) = 2;
-    mat_a(0, 2) = 3;
-    mat_a(1, 0) = 4;
-    mat_a(1, 1) = 5;
-    mat_a(1, 2) = 6;
-    mat_a(2, 0) = 7;
-    mat_a(2, 1) = 8;
-    mat_a(2, 2) = 9;
-    Eigen::Matrix<Scalar, 3, 3> mat_b;
-    mat_b(0, 0) = 2;
-    mat_b(0, 1) = 3;
-    mat_b(0, 2) = 4;
-    mat_b(1, 0) = 5;
-    mat_b(1, 1) = 6;
-    mat_b(1, 2) = 7;
-    mat_b(2, 0) = 8;
-    mat_b(2, 1) = 9;
-    mat_b(2, 2) = 0;
-    return mat_a + s * mat_b;
-  };
+  for (int i = 0; i < points.size(); i++) {
+    assert(std::abs((points[i].real() * points[i].real() + points[i].imag() * points[i].imag()) - radius) < 0.01);
+  }
 
   std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
   std::pair<Mat<Scalar>, Mat<Scalar>> result =
