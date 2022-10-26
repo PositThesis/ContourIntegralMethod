@@ -95,6 +95,15 @@ int main(int argc, char **argv) {
 #ifdef USE_Posit64
   using Scalar = std::complex<sw::universal::posit<64, 2>>;
 #endif
+#ifdef USE_Posit643
+  using Scalar = std::complex<sw::universal::posit<64, 3>>;
+#endif
+#ifdef USE_Posit644
+  using Scalar = std::complex<sw::universal::posit<64, 4>>;
+#endif
+#ifdef USE_Posit645
+  using Scalar = std::complex<sw::universal::posit<64, 5>>;
+#endif
   using Real = Scalar::value_type;
 
   enum class Analysis {
