@@ -1,0 +1,11 @@
+{
+    "creators": [
+        {
+            "name": "Yannik Böttcher"
+        }
+    ],
+    "description": "This is a C++ implementation of the contour integral method by Beyn (\"An integral method for solving nonlinear eigenvalue problems\", https://doi.org/10.1016/j.laa.2011.03.030).",
+    "references": [
+        "W.-J. Beyn. \"An integral method for solving nonlinear eigenvalue problems\". In: Linear Algebra and its Applications 436.10 (2012). Special Issue dedicated to Heinrich Voss’s 65th birthday, pp. 3839–3863. issn: 0024-3795. doi: https://doi.org/10.1016/j.laa.2011.03.030. url: https://www.sciencedirect.com/science/article/pii/S0024379511002540."
+    ]
+}
